@@ -304,3 +304,138 @@ public class DequeExample {
 ### 总结
 
 `Deque` 接口提供了丰富的方法来操作双端队列，使其既可以用作队列（FIFO）也可以用作栈（LIFO）。通过 `ArrayDeque` 或 `LinkedList` 等实现类，你可以灵活地进行各种插入、移除和检查操作。
+
+## 关于`Queue`的四个问题
+### 1. **Java中的`Queue`是容器吗？**
+
+是的，Java 中的 `Queue` 是一种**容器**。`Queue` 是 Java Collections Framework（集合框架）中的一部分，用于存储一组元素，并且是一种**特殊的线性数据结构**。它遵循**先进先出（FIFO）**的原则，即先加入的元素先被处理或删除。
+
+`Queue` 是一个接口，继承自 `Collection` 接口，因此它是容器类型的数据结构。它的主要实现类有：
+- `LinkedList`（也实现了 `Deque`）
+- `PriorityQueue`
+- `ArrayDeque`
+
+### 2. **我们使用的`Queue`是哪个版本的STL？**
+
+Java 中的 `Queue` 并不是直接来自 C++ 的 STL（Standard Template Library），而是 Java 自己的集合框架中的一个接口。Java 的 `Queue` 接口出现在 **Java 2 Platform, Standard Edition (J2SE) 5.0** 版本中（也就是 Java 5）引入的 Java Collections Framework（集合框架）的一部分。
+
+Java 集合框架中的 `Queue` 接口类似于 C++ STL 中的 `queue`，但两者是不同语言中的独立实现。Java 结合了自己的泛型系统来构建类似于 C++ 的容器功能。
+
+### 3. **Java中的`Queue`是如何实现的？**
+
+`Queue` 是一个接口，它有多个具体的实现类。最常用的几种实现包括：
+
+- **`LinkedList`**：
+  - `LinkedList` 实现了 `Queue` 接口（也实现了 `Deque`），它是基于双向链表的数据结构，能够高效地进行元素的插入和删除操作。`LinkedList` 是一个双端队列，支持 `Queue` 的所有方法，并且可以用作队列、栈或双端队列。
+  
+- **`PriorityQueue`**：
+  - `PriorityQueue` 是基于**堆（heap）**的数据结构，默认是**小顶堆**。它根据元素的优先级进行排序，而不是按照插入顺序处理。你可以通过自定义比较器来指定元素的优先级。
+
+- **`ArrayDeque`**：
+  - `ArrayDeque` 是基于**数组**实现的双端队列，能够快速在队列的两端进行元素的插入和删除操作。它不允许 `null` 元素，并且比 `LinkedList` 更高效。
+
+这些实现类都遵循 `Queue` 接口定义的方法，如 `add()`, `offer()`, `poll()`, `remove()` 和 `peek()` 等。
+
+### 4. **`Queue`提供迭代器遍历空间吗？**
+
+是的，`Queue` 提供了迭代器来遍历元素。因为 `Queue` 继承自 `Collection` 接口，而 `Collection` 接口继承自 `Iterable` 接口，所以所有 `Queue` 实现都提供了 `iterator()` 方法，允许你通过 `Iterator` 对队列进行遍历。
+
+例如，遍历一个队列可以使用如下代码：
+
+```java
+Queue<Integer> queue = new LinkedList<>();
+queue.add(1);
+queue.add(2);
+queue.add(3);
+
+Iterator<Integer> iterator = queue.iterator();
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
+```
+
+然而，值得注意的是，尽管你可以通过迭代器遍历队列，但这种遍历并不会改变队列的顺序或遵循队列的 FIFO（先进先出）原则。也就是说，迭代器遍历是基于队列的当前存储结构，而不一定是按照队列元素的出队顺序进行的。
+
+总结：
+- **`Queue` 是容器**，用于存储和管理元素。
+- Java 中的 `Queue` 是 Java Collections Framework 中的一部分，不属于 C++ 的 STL。
+- `Queue` 的实现类包括 `LinkedList`、`PriorityQueue` 和 `ArrayDeque`，它们分别基于链表、堆和数组实现。
+- `Queue` 提供迭代器，可以通过 `iterator()` 方法进行遍历。
+
+## 栈里面的元素在内存中是连续分布的么？（面试题）
+栈（`Stack`）中的元素在内存中**不一定是连续分布的**，这取决于具体的栈实现方式。在 Java 或其他高级编程语言中，栈的实现通常基于不同的数据结构（如数组或链表），而这些数据结构的存储方式决定了元素在内存中的分布是否连续。
+
+### 1. **数组实现的栈（连续分布）**：
+   如果栈是基于**数组**实现的，比如 Java 中的 `ArrayDeque` 或自己手动实现的基于数组的栈，那么栈中的元素在内存中是**连续分布**的，因为数组本身是连续的内存块。
+
+   - **优点**：数组实现的栈可以通过索引快速访问元素，速度较快。
+   - **缺点**：数组的大小是固定的，当需要动态扩展时，需要进行数组复制操作，可能会影响性能。
+
+   例如，自己实现的基于数组的栈：
+
+   ```java
+   public class ArrayStack {
+       private int[] stack;
+       private int top;
+
+       public ArrayStack(int capacity) {
+           stack = new int[capacity];  // 数组，内存中是连续的
+           top = -1;
+       }
+
+       public void push(int value) {
+           stack[++top] = value;       // 元素存储在连续的数组中
+       }
+
+       public int pop() {
+           return stack[top--];
+       }
+   }
+   ```
+
+   在这种实现中，`stack` 数组中的元素是连续分布的，因为数组在内存中是连续的存储单元。
+
+### 2. **链表实现的栈（不连续分布）**：
+   如果栈是基于**链表**实现的，比如 Java 中的 `LinkedList` 实现的栈，那么栈中的元素在内存中可能是**不连续分布**的。链表的每个节点存储了数据和一个指向下一个节点的指针，而这些节点在内存中的位置可以是不连续的。
+
+   - **优点**：链表实现的栈能够动态扩展，不需要预定义大小，适合大小不确定的场景。
+   - **缺点**：链表节点在内存中不连续，操作时需要通过指针遍历节点，相较于数组访问慢一些。
+
+   例如，基于链表实现的栈：
+
+   ```java
+   public class LinkedListStack {
+       private Node top;
+
+       private static class Node {
+           int data;
+           Node next;
+           Node(int data) {
+               this.data = data;
+           }
+       }
+
+       public void push(int value) {
+           Node newNode = new Node(value);
+           newNode.next = top;
+           top = newNode;
+       }
+
+       public int pop() {
+           int value = top.data;
+           top = top.next;
+           return value;
+       }
+   }
+   ```
+
+   在这个链表实现的栈中，栈中的每个元素是通过链表节点存储的，节点在内存中的分布是由内存分配器动态管理的，可能是不连续的。
+
+### 3. **Java `Stack` 类的实现**：
+   Java 中的 `Stack` 类实际上是继承自 `Vector` 类的，而 `Vector` 是基于动态数组实现的。因此，Java 中 `Stack` 类中的元素存储在一个动态数组中，在内存中是**连续分布**的。不过，随着栈的增长，数组可能会重新分配内存，导致栈的内容被复制到一个新的、较大的连续内存区域。
+
+### 总结：
+- **数组实现的栈**：栈中的元素在内存中是**连续分布**的。
+- **链表实现的栈**：栈中的元素在内存中是**不连续分布**的。
+- **Java `Stack` 类**：基于动态数组实现，因此栈中的元素在内存中通常是**连续分布**的，除非数组需要扩容。
+
