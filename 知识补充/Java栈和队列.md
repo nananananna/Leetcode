@@ -308,7 +308,8 @@ public class DequeExample {
 ## 关于`Queue`的四个问题
 ### 1. **Java中的`Queue`是容器吗？**
 
-是的，Java 中的 `Queue` 是一种**容器**。`Queue` 是 Java Collections Framework（集合框架）中的一部分，用于存储一组元素，并且是一种**特殊的线性数据结构**。它遵循**先进先出（FIFO）**的原则，即先加入的元素先被处理或删除。
+是的，Java 中的 `Queue` 是一种**容器**。`Queue` 是 Java Collections Framework（集合框架）中的一部分，用于存储一组元素，并且是一种**特殊的线性数据结构**。它遵循**先进先出 (FIFO)**
+的原则，即先加入的元素先被处理或删除。
 
 `Queue` 是一个接口，继承自 `Collection` 接口，因此它是容器类型的数据结构。它的主要实现类有：
 - `LinkedList`（也实现了 `Deque`）
